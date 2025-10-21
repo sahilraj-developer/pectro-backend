@@ -1,18 +1,21 @@
-const mongoose = require('mongoose');
+// config/connectdb.js
+import mongoose from "mongoose";
 
-const connectDb =  async (DATABASE_URL)=>{
-    try{
-        console.log("running db ")
-    const DB_OPTION ={
-        dbName:'pectro'
-    }  
-    console.log("line numebr 9",DATABASE_URL)
-    await mongoose.connect(DATABASE_URL,DB_OPTION)
-    console.log("conenct dataBase successfully")
-    }catch(error){
-console.log("error in db",error)
-    }
+const connectDb = async (DATABASE_URL) => {
+  try {
+    console.log("Connecting to database...");
 
-}
+    const DB_OPTIONS = {
+      dbName: "pectro",
+    };
 
-module.exports = connectDb;
+    console.log("DATABASE_URL:", DATABASE_URL);
+    await mongoose.connect(DATABASE_URL, DB_OPTIONS);
+
+    console.log("Connected to database successfully");
+  } catch (error) {
+    console.error("Error connecting to database:", error);
+  }
+};
+
+export default connectDb;

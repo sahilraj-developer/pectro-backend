@@ -1,24 +1,33 @@
-const express = require('express');
+// routes/userRoutes.js
+import express from "express";
 const router = express.Router();
-const { userRegistration, userLogin, changeUserPassword, loggedUser, sendUserPasswordResetMail, userPasswordReset } = require('../controllers/userController');
-const {checkUserAuth} = require("../middlewares/auth-middleware")
 
-// route level middleware to PRotect route
-router.use('/changepassword',checkUserAuth)
-router.use('/changepassword',loggedUser)
+import {
+  userRegistration,
+  userLogin,
+  changeUserPassword,
+  loggedUser,
+  sendUserPasswordResetMail,
+  userPasswordReset,
+} from "../controllers/userController.js";
 
+import { checkUserAuth } from "../middleware/authMiddleware.js";
 
-// public routes
+// ------------------------
+// Public Routes
+// ------------------------
+router.post("/register", userRegistration);
+router.post("/login", userLogin);
+router.post("/send-reset-password-email", sendUserPasswordResetMail);
+router.post("/reset-password/:id/:token", userPasswordReset);
 
-router.post('/register',userRegistration)
-router.post('/login',userLogin)
-router.post('/send-reset-password-email',sendUserPasswordResetMail)
-router.post('/reset-password/:id/:token',userPasswordReset)
+// ------------------------
+// Private Routes (Protected)
+// ------------------------
+// Protect middleware applies only to routes below
+router.use(checkUserAuth);
 
+router.post("/changepassword", changeUserPassword);
+router.get("/changepassword", loggedUser);
 
-// private routes
-
-router.post('/changepassword',changeUserPassword)
-router.get('/changepassword',loggedUser)
-
-module.exports = router;
+export default router;
