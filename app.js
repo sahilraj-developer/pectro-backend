@@ -13,6 +13,8 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import recordRoutes from "./routes/recordRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import settingRoutes from "./routes/settingRoutes.js";
+import healthRoutes from './routes/healthRoutes.js'
+import metricsRoutes from "./routes/metricsRoutes.js";
 
 dotenv.config();
 
@@ -29,7 +31,7 @@ connectDb(DATABASE_URL);
 // Middleware
 // ------------------
 app.use(express.json()); // Parse JSON body
-app.use(cors({ origin: "http://localhost:3000", credentials: true })); // CORS
+app.use(cors({ origin: "http://localhost:5173", credentials: true })); // CORS
 app.use(helmet()); // Security headers
 app.use(xss()); // Prevent XSS attacks
 
@@ -44,9 +46,8 @@ app.use(limiter);
 // ------------------
 // Routes
 // ------------------
-app.get("/", (req, res) => {
-  res.status(200).json({ data: "health checker" });
-});
+app.use("/api/health", healthRoutes);
+app.use("/api/metrics", metricsRoutes);
 
 app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
