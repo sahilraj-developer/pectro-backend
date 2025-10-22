@@ -16,6 +16,10 @@ import settingRoutes from "./routes/settingRoutes.js";
 import healthRoutes from './routes/healthRoutes.js'
 import metricsRoutes from "./routes/metricsRoutes.js";
 
+
+import doctorRoutes from "./routes/doctorRoutes.js";
+import appointmentRoutes from "./routes/appointmentRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -54,6 +58,9 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/records", recordRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/settings", settingRoutes);
+
+app.use("/api/doctors", doctorRoutes);
+app.use("/api/appointments", appointmentRoutes);
 
 // ------------------
 // Error Handling Middleware
