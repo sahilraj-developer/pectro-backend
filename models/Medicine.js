@@ -1,3 +1,4 @@
+import mongoose  from "mongoose";
 const medicineSchema = new mongoose.Schema(
   {
     storeId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // role: medicine_store
