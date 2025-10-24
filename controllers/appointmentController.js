@@ -73,7 +73,7 @@ export const createAppointment = async (req, res) => {
 export const getAllAppointments = async (req, res) => {
   try {
     const appointments = await Appointment.find()
-      .populate("doctorId", "specialization consultationFee")
+      .populate("doctorId", "name specialization consultationFee")
       .populate("userId", "name email");
     logAction(null, "FETCH_APPOINTMENTS", `Fetched all appointments`);
     res.json(appointments);
