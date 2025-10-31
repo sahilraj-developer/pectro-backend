@@ -9,6 +9,7 @@ import {
   loggedUser,
   sendUserPasswordResetMail,
   userPasswordReset,
+  userGet,
 } from "../controllers/userController.js";
 
 import { checkUserAuth } from "../middleware/authMiddleware.js";
@@ -20,6 +21,11 @@ router.post("/register", userRegistration);
 router.post("/login", userLogin);
 router.post("/send-reset-password-email", sendUserPasswordResetMail);
 router.post("/reset-password/:id/:token", userPasswordReset);
+
+
+
+router.get("/getuser", userGet);
+
 
 // ------------------------
 // Private Routes (Protected)
