@@ -125,6 +125,9 @@ import medicineRoutes from "./routes/medicineRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 
+
+import { connectKafka, producer, consumer } from "./config/kafka.js"; 
+
 import RateLimitRedis from "rate-limit-redis";
 
 dotenv.config();
@@ -174,6 +177,58 @@ app.use(morgan("dev"));
 // ------------------
 // Redis Caching Middleware
 // ------------------
+
+
+
+
+
+
+
+
+// ------------------
+// Kafka Setup
+// ------------------
+(async () => {
+  await connectKafka();
+
+  // Example: consume messages from a topic
+  await consumer.subscribe({ topic: "user-events", fromBeginning: true });
+
+  consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      console.log(`📩 Received on ${topic}: ${message.value.toString()}`);
+    },
+  });
+})();
+
+// ------------------
+// Example Kafka Producer (test)
+// ------------------
+app.post("/api/v1/test-produce", async (req, res) => {
+  try {
+    const message = req.body || { test: "Kafka working fine" };
+
+    await producer.send({
+      topic: "user-events",
+      messages: [{ value: JSON.stringify(message) }],
+    });
+
+    res.status(200).json({ status: "success", message: "Sent to Kafka" });
+  } catch (err) {
+    console.error("Kafka produce error:", err);
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
 export const cacheMiddleware = (keyPrefix) => async (req, res, next) => {
   try {
     const key = `${keyPrefix}:${req.originalUrl}`;
